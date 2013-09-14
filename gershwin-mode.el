@@ -45,14 +45,9 @@
     "in-ns" "first" "second" "last" "peek")
   "Words built into the core of Gershwin")
 
-(defun gershwin-open-quotation () (interactive) (insert "\u00ab"))
-(defun gershwin-close-quotation () (interactive) (insert "\u00bb"))
-
 (defvar gershwin-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map clojure-mode-map)
-    (define-key map (kbd "C-M-,") 'gershwin-open-quotation)
-    (define-key map (kbd "C-M-.") 'gershwin-close-quotation)
     map)
   "Keymap for Gershwin mode. Inherits from `clojure-mode-map'.")
 
@@ -120,11 +115,6 @@ See command `nrepl-interaction-mode'."
                      (mapcar (lambda (x)
                                (escape-chars x))
                              gershwin-builtins)))))
-
-  ;; Treat left and right guillemets as proper delimiters
-  (add-hook 'gershwin-mode-hook (lambda ()
-                                  (modify-syntax-entry ?« "(>" )
-                                  (modify-syntax-entry ?» ")<" )))
 
   ;; nREPL integration
   (add-hook 'nrepl-connected-hook 'nrepl-enable-on-existing-gershwin-buffers)
